@@ -56,6 +56,7 @@ class Reservation {
     this.#validateDuplicate(value);
     this.#validateIsValidMenu(value);
     this.#validateOnlyBeverage(value);
+    this.#validateZeroQuantity(value);
   }
 
   #validateFormat(value) {
@@ -67,38 +68,48 @@ class Reservation {
   }
 
   #validateDuplicate(value) {
-    const condition = value
-      .map(item => item.split('-')[0])
-      .some((item, index) => index !== item.lastIndexOf(item));
+    const orderList = value.map(item => item.split('-')[0]);
 
-    if (!condition) {
+    if (
+      orderList.some((item, index) => index !== orderList.lastIndexOf(item))
+    ) {
       throw new CustomError(ERROR.duplicateOrder);
     }
   }
 
   #validateIsValidMenu(value) {
+    const orderList = value.map(item => item.split('-')[0]);
     const menu = Object.keys(MENU);
 
-    const condition = value
-      .map(item => item.split('-')[0])
-      .some(item => menu.includes(item));
-
-    if (!condition) {
+    if (orderList.some(item => !menu.includes(item))) {
       throw new CustomError(ERROR.invalidMenu);
     }
   }
 
   #validateOnlyBeverage(value) {
+    const orderList = value.map(item => item.split('-')[0]);
     const beverage = Object.values(MENU)
       .filter(item => item.category === CONSTANTS.beverage)
       .map(item => item.name);
 
-    const condition = value
-      .map(item => item.split('-')[0])
-      .some(item => beverage.includes(item));
-
-    if (!condition) {
+    if (orderList.every(item => beverage.includes(item))) {
       throw new CustomError(ERROR.onlyBeverage);
+    }
+  }
+
+  #validateZeroQuantity(value) {
+    const quantity = value.map(item => Number(item.split('-')[1]));
+
+    if (quantity.some(item => item === 0)) {
+      throw new CustomError(ERROR.zeroQuantity);
+    }
+  }
+
+  #validateZeroQuantity(value) {
+    const quantity = value.map(item => Number(item.split('-')[1]));
+
+    if (quantity.some(item => item === 0)) {
+      throw new CustomError(ERROR.zeroQuantity);
     }
   }
 }
