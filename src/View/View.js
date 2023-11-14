@@ -24,6 +24,16 @@ class View {
 
     return order;
   }
+
+  print(value) {
+    this.#outputView.printMessage(value);
+  }
+
+  printEventPreview(date) {
+    const message = MESSAGES.output.eventPreview.join(`${date}`);
+
+    this.#outputView.printMessage(message);
+  }
 }
 
 export default View;

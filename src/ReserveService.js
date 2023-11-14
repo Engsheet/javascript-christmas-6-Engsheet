@@ -33,15 +33,17 @@ class ReserveService {
     }
   }
 
-  async setReservation() {
+  async setReservationDetails() {
+    this.#view.print(MESSAGES.output.intro);
+
     await this.setReservationDate();
     await this.setReservationOrder();
   }
 
   async getReservation() {
-    Console.print(MESSAGES.output.intro);
-    await this.setReservation();
-    Console.print(MESSAGES.output.eventPreview);
+    await this.setReservationDetails();
+
+    this.#view.printEventPreview(this.#reservation.getDate());
   }
 }
 

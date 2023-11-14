@@ -1,7 +1,7 @@
 import { Console } from '@woowacourse/mission-utils';
 
 const OutputView = {
-  printMenu(message) {
+  printMessage(message) {
     Console.print(message);
   },
 };
