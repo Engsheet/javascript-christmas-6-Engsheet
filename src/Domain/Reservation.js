@@ -34,6 +34,14 @@ class Reservation {
     this.#order = this.#formatOrder(order);
   }
 
+  getOrderHistory() {
+    const orderHistory = Object.entries(this.#order).map(
+      item => `${item[0]} ${item[1]}개`,
+    );
+
+    return orderHistory;
+  }
+
   #formatOrder(value) {
     const order = {};
 

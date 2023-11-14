@@ -6,7 +6,7 @@ class App {
   }
 
   async run() {
-    await this.reserveService.getReservation();
+    await this.reserveService.useReserveService();
   }
 }
 

@@ -8,7 +8,7 @@ const request = Object.freeze({
 const output = Object.freeze({
   intro: '안녕하세요! 우테코 식당 12월 이벤트 플래너입니다.',
   eventPreview: ['12월 ', '일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!\n'],
-  orderMenu: '<주문 메뉴>',
+  orderHistory: '<주문 메뉴>',
   orderAmount: '<할인 전 총주문 금액>',
   giveaway: '<증정 메뉴>',
   benefitDetails: '<혜택 내역>',
