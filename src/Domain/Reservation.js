@@ -54,6 +54,8 @@ class Reservation {
     console.log(value);
     this.#validateFormat(value);
     this.#validateDuplicate(value);
+    this.#validateIsValidMenu(value);
+    
   }
 
   #validateFormat(value) {
@@ -69,8 +71,20 @@ class Reservation {
       .map(item => item.split('-')[0])
       .some((item, index) => index !== item.lastIndexOf(item));
 
-    if (condition) {
+    if (!condition) {
       throw new CustomError(ERROR.duplicateOrder);
+    }
+  }
+
+  #validateIsValidMenu(value) {
+    const menu = Object.keys(MENU);
+
+    const condition = value
+      .map(item => item.split('-')[0])
+      .some(item => menu.includes(item));
+
+    if (!condition) {
+      throw new CustomError(ERROR.invalidMenu);
     }
   }
 }
