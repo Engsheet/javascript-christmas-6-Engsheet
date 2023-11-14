@@ -1,5 +1,13 @@
+import ReserveService from './ReserveService.js';
+
 class App {
-  async run() {}
+  constructor() {
+    this.reserveService = new ReserveService();
+  }
+
+  async run() {
+    await this.reserveService.getReservation();
+  }
 }
 
 export default App;
