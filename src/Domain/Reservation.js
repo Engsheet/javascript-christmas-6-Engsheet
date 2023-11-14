@@ -47,22 +47,23 @@ class Reservation {
 
   #validateDate(date) {
     if (!Number.isInteger(date) || !(date >= 1 && date <= 31)) {
-      throw new CustomError(ERROR.invalidInputDate);
+      throw new CustomError(ERROR.invalidDate);
     }
   }
 
-  #validateOrder(value) {
-    this.#validateFormat(value);
-    this.#validateDuplicate(value);
-    this.#validateIsValidMenu(value);
-    this.#validateOnlyBeverage(value);
-    this.#validateZeroQuantity(value);
+  #validateOrder(order) {
+    this.#validateFormat(order);
+    this.#validateDuplicate(order);
+    this.#validateIsValidMenu(order);
+    this.#validateOnlyBeverage(order);
+    this.#validateZeroQuantity(order);
+    this.#validateExceedMaxQuantity(order);
   }
 
   #validateFormat(value) {
     value.forEach(item => {
       if (!item.match(REGEXP.inputOrderFormat)) {
-        throw new CustomError(ERROR.invalidInputOrder);
+        throw new CustomError(ERROR.invalidOrder);
       }
     });
   }
@@ -73,7 +74,7 @@ class Reservation {
     if (
       orderList.some((item, index) => index !== orderList.lastIndexOf(item))
     ) {
-      throw new CustomError(ERROR.duplicateOrder);
+      throw new CustomError(ERROR.invalidOrder);
     }
   }
 
@@ -82,7 +83,7 @@ class Reservation {
     const menu = Object.keys(MENU);
 
     if (orderList.some(item => !menu.includes(item))) {
-      throw new CustomError(ERROR.invalidMenu);
+      throw new CustomError(ERROR.invalidOrder);
     }
   }
 
@@ -93,7 +94,7 @@ class Reservation {
       .map(item => item.name);
 
     if (orderList.every(item => beverage.includes(item))) {
-      throw new CustomError(ERROR.onlyBeverage);
+      throw new CustomError(ERROR.invalidOrder);
     }
   }
 
@@ -101,15 +102,17 @@ class Reservation {
     const quantity = value.map(item => Number(item.split('-')[1]));
 
     if (quantity.some(item => item === 0)) {
-      throw new CustomError(ERROR.zeroQuantity);
+      throw new CustomError(ERROR.invalidOrder);
     }
   }
 
-  #validateZeroQuantity(value) {
-    const quantity = value.map(item => Number(item.split('-')[1]));
+  #validateExceedMaxQuantity(value) {
+    const totalQuantity = value
+      .map(item => Number(item.split('-')[1]))
+      .reduce((acc, cur) => acc + cur, 0);
 
-    if (quantity.some(item => item === 0)) {
-      throw new CustomError(ERROR.zeroQuantity);
+    if (totalQuantity > CONSTANTS.maxOrderQuantity) {
+      throw new CustomError(ERROR.invalidOrder);
     }
   }
 }
