@@ -29,8 +29,12 @@ class View {
     this.#outputView.printMessage(value);
   }
 
-  printList(array) {
-    array.forEach(item => this.#outputView.printMessage(item));
+  printReceipt(message, value) {
+    const output = Array.isArray(value)
+      ? [message, ...value]
+      : [message, value];
+
+    output.forEach(item => this.#outputView.printMessage(item));
   }
 
   printEventPreview(date) {
@@ -40,9 +44,11 @@ class View {
   }
 
   printOrderHistory(value) {
-    const message = [MESSAGES.output.orderHistory, ...value];
+    this.printReceipt(MESSAGES.output.orderHistory, value);
+  }
 
-    this.printList(message);
+  printTotalPrice(value) {
+    this.printReceipt(MESSAGES.output.totalPrice, value);
   }
 }
 

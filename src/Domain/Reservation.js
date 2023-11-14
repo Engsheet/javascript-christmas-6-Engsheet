@@ -42,6 +42,14 @@ class Reservation {
     return orderHistory;
   }
 
+  getTotalPrice() {
+    const totalPrice = Object.entries(this.#order)
+      .map(item => MENU[item[0]].price * item[1])
+      .reduce((total, price) => total + price, 0);
+
+    return `${totalPrice.toLocaleString()}원`;
+  }
+
   #formatOrder(value) {
     const order = {};
 
@@ -117,7 +125,7 @@ class Reservation {
   #validateExceedMaxQuantity(value) {
     const totalQuantity = value
       .map(item => Number(item.split('-')[1]))
-      .reduce((acc, cur) => acc + cur, 0);
+      .reduce((total, quantity) => total + quantity, 0);
 
     if (totalQuantity > CONSTANTS.maxOrderQuantity) {
       throw new CustomError(ERROR.invalidOrder);
