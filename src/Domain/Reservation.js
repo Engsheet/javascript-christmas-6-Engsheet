@@ -1,4 +1,5 @@
 import ERROR from '../constants/Error.js';
+import MENU from '../constants/Menu.js';
 import REGEXP from '../constants/RegExp.js';
 import CustomError from '../utils/CustomError.js';
 
@@ -32,7 +33,14 @@ class Reservation {
     this.#order = this.#formatOrder(order);
   }
 
-  #formatOrder(order) {
+  #formatOrder(value) {
+    const order = {};
+
+    value.forEach(item => {
+      const [menu, count] = item.split('-');
+      order[menu] = count;
+    });
+
     return order;
   }
 
@@ -42,17 +50,28 @@ class Reservation {
     }
   }
 
-  #validateOrder(order) {
-    console.log(order);
-    this.#validateFormat(order);
+  #validateOrder(value) {
+    console.log(value);
+    this.#validateFormat(value);
+    this.#validateDuplicate(value);
   }
 
-  #validateFormat(order) {
-    order.forEach(item => {
+  #validateFormat(value) {
+    value.forEach(item => {
       if (!item.match(REGEXP.inputOrderFormat)) {
         throw new CustomError(ERROR.invalidInputOrder);
       }
     });
+  }
+
+  #validateDuplicate(value) {
+    const condition = value
+      .map(item => item.split('-')[0])
+      .some((item, index) => index !== item.lastIndexOf(item));
+
+    if (condition) {
+      throw new CustomError(ERROR.duplicateOrder);
+    }
   }
 }
 
