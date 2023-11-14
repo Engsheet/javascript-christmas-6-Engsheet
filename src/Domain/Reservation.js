@@ -1,3 +1,4 @@
+import CONSTANTS from '../constants/Constants.js';
 import ERROR from '../constants/Error.js';
 import MENU from '../constants/Menu.js';
 import REGEXP from '../constants/RegExp.js';
@@ -51,11 +52,10 @@ class Reservation {
   }
 
   #validateOrder(value) {
-    console.log(value);
     this.#validateFormat(value);
     this.#validateDuplicate(value);
     this.#validateIsValidMenu(value);
-    
+    this.#validateOnlyBeverage(value);
   }
 
   #validateFormat(value) {
@@ -85,6 +85,20 @@ class Reservation {
 
     if (!condition) {
       throw new CustomError(ERROR.invalidMenu);
+    }
+  }
+
+  #validateOnlyBeverage(value) {
+    const beverage = Object.values(MENU)
+      .filter(item => item.category === CONSTANTS.beverage)
+      .map(item => item.name);
+
+    const condition = value
+      .map(item => item.split('-')[0])
+      .some(item => beverage.includes(item));
+
+    if (!condition) {
+      throw new CustomError(ERROR.onlyBeverage);
     }
   }
 }
