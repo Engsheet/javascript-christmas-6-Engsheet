@@ -47,7 +47,7 @@ class Reservation {
       .map(item => MENU[item[0]].price * item[1])
       .reduce((total, price) => total + price, 0);
 
-    return `${totalPrice.toLocaleString()}원`;
+    return totalPrice;
   }
 
   #formatOrder(value) {
@@ -106,7 +106,7 @@ class Reservation {
   #validateOnlyBeverage(value) {
     const orderList = value.map(item => item.split('-')[0]);
     const beverage = Object.values(MENU)
-      .filter(item => item.category === CONSTANTS.beverage)
+      .filter(item => item.category === CONSTANTS.category.beverage)
       .map(item => item.name);
 
     if (orderList.every(item => beverage.includes(item))) {

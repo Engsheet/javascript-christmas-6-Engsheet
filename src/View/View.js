@@ -48,7 +48,10 @@ class View {
   }
 
   printTotalPrice(value) {
-    this.printReceipt(MESSAGES.output.totalPrice, value);
+    this.printReceipt(
+      MESSAGES.output.totalPrice,
+      `${value.toLocaleString()}원`,
+    );
   }
 }
 

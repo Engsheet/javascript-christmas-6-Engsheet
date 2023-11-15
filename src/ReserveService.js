@@ -1,16 +1,20 @@
 import { Console } from '@woowacourse/mission-utils';
+import Event from './Domain/Event.js';
+import Reservation from './Domain/Reservation.js';
 import View from './View/View.js';
 import MESSAGES from './constants/Messages.js';
-import Reservation from './Domain/Reservation.js';
 
 class ReserveService {
   #view;
 
   #reservation;
 
+  #event;
+
   constructor() {
     this.#view = new View();
     this.#reservation = new Reservation();
+    this.#event = new Event();
   }
 
   async setReservationDate() {
@@ -40,7 +44,9 @@ class ReserveService {
     await this.setReservationOrder();
   }
 
-  applyEvent() {}
+  applyEvent() {
+    this.#event.applyEvent(this.#reservation);
+  }
 
   printReceipt() {
     this.#view.printEventPreview(this.#reservation.getDate());
