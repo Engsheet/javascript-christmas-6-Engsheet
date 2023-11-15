@@ -44,10 +44,22 @@ class Reservation {
 
   getTotalPrice() {
     const totalPrice = Object.entries(this.#order)
-      .map(item => MENU[item[0]].price * item[1])
+      .map(order => MENU[order[0]].price * order[1])
       .reduce((total, price) => total + price, 0);
 
     return totalPrice;
+  }
+
+  getCategoryOrderCount(category) {
+    const categories = Object.values(CONSTANTS.categories);
+
+    if (!categories.includes(category)) return null;
+
+    const categoryOrderCount = Object.entries(this.#order)
+      .filter(order => MENU[order[0]].category === category)
+      .reduce((total, order) => total + Number(order[1]), 0);
+
+    return categoryOrderCount;
   }
 
   #formatOrder(value) {
@@ -72,8 +84,8 @@ class Reservation {
     this.#validateDuplicate(order);
     this.#validateIsValidMenu(order);
     this.#validateOnlyBeverage(order);
-    this.#validateZeroQuantity(order);
-    this.#validateExceedMaxQuantity(order);
+    this.#validateZeroCount(order);
+    this.#validateExceedMaxCount(order);
   }
 
   #validateFormat(value) {
@@ -106,7 +118,7 @@ class Reservation {
   #validateOnlyBeverage(value) {
     const orderList = value.map(item => item.split('-')[0]);
     const beverage = Object.values(MENU)
-      .filter(item => item.category === CONSTANTS.category.beverage)
+      .filter(item => item.category === CONSTANTS.categories.beverage)
       .map(item => item.name);
 
     if (orderList.every(item => beverage.includes(item))) {
@@ -114,20 +126,20 @@ class Reservation {
     }
   }
 
-  #validateZeroQuantity(value) {
-    const quantity = value.map(item => Number(item.split('-')[1]));
+  #validateZeroCount(value) {
+    const count = value.map(item => Number(item.split('-')[1]));
 
-    if (quantity.some(item => item === 0)) {
+    if (count.some(item => item === 0)) {
       throw new CustomError(ERROR.invalidOrder);
     }
   }
 
-  #validateExceedMaxQuantity(value) {
-    const totalQuantity = value
+  #validateExceedMaxCount(value) {
+    const totalCount = value
       .map(item => Number(item.split('-')[1]))
-      .reduce((total, quantity) => total + quantity, 0);
+      .reduce((total, count) => total + count, 0);
 
-    if (totalQuantity > CONSTANTS.maxOrderQuantity) {
+    if (totalCount > CONSTANTS.maxOrderCount) {
       throw new CustomError(ERROR.invalidOrder);
     }
   }

@@ -1,3 +1,4 @@
+import CONSTANTS from '../constants/Constants.js';
 import MESSAGES from '../constants/Messages.js';
 import InputView from './InputView.js';
 import OutputView from './OutputView.js';
@@ -55,7 +56,8 @@ class View {
   }
 
   printBenefits(benefits) {
-    this.#printGiveaway(benefits.giveawayBenefit);
+    this.#printGiveaway(benefits.giveawayEvent);
+    this.#printBenefitDetails(benefits);
   }
 
   #printGiveaway(giveawayBenefit) {
@@ -63,6 +65,26 @@ class View {
       MESSAGES.output.giveawayTitle,
       giveawayBenefit
         ? MESSAGES.output.giveawayMessage
+        : MESSAGES.output.noBenefitsMessage,
+    );
+  }
+
+  #printBenefitDetails(benefits) {
+    const benefitDetails = [...Object.entries(benefits)]
+      .filter(item => item[1] && typeof item[1] === 'number')
+      .map(
+        item =>
+          `${CONSTANTS.eventName[item[0]]}: -${item[1].toLocaleString()}원`,
+      );
+
+    if (benefits.giveawayEvent) {
+      benefitDetails.push(MESSAGES.output.giveawayDetails);
+    }
+
+    this.printReceipt(
+      MESSAGES.output.benefitDetailsTitle,
+      benefitDetails.length
+        ? benefitDetails
         : MESSAGES.output.noBenefitsMessage,
     );
   }
