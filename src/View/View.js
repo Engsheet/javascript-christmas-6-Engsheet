@@ -55,23 +55,24 @@ class View {
     );
   }
 
-  printBenefits(event) {
+  printBenefits(event, totalPrice) {
     this.#printGiveaway(event.getGiveawayEvent());
     this.#printBenefitDetails(event.getBenefitDetails());
     this.#printTotalBenefitPrice(event.getTotalBenefitsPrice());
+    this.#printApplyDiscountPayment(totalPrice, event.getTotalDiscountPrice());
   }
 
-  #printGiveaway(giveawayBenefit) {
+  #printGiveaway(value) {
     this.printReceipt(
       MESSAGES.output.giveawayTitle,
-      giveawayBenefit
+      value
         ? MESSAGES.output.giveawayMessage
         : MESSAGES.output.noBenefitsMessage,
     );
   }
 
-  #printBenefitDetails(benefitObject) {
-    const benefitDetails = Object.entries(benefitObject).map(
+  #printBenefitDetails(value) {
+    const benefitDetails = Object.entries(value).map(
       item => `${CONSTANTS.eventName[item[0]]}: -${item[1].toLocaleString()}원`,
     );
 
@@ -83,12 +84,21 @@ class View {
     );
   }
 
-  #printTotalBenefitPrice(benefitObject) {
+  #printTotalBenefitPrice(value) {
     this.printReceipt(
       MESSAGES.output.benefitPriceTitle,
-      benefitObject
-        ? `-${benefitObject.toLocaleString()}원`
+      value
+        ? `-${value.toLocaleString()}원`
         : MESSAGES.output.noBenefitsMessage,
+    );
+  }
+
+  #printApplyDiscountPayment(totalPrice, discountPrice) {
+    const applyDiscountPayment = totalPrice - discountPrice;
+
+    this.printReceipt(
+      MESSAGES.output.applyDiscountPaymentTitle,
+      `${applyDiscountPayment.toLocaleString()}원`,
     );
   }
 }
