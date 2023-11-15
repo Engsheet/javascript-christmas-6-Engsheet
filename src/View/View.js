@@ -44,13 +44,26 @@ class View {
   }
 
   printOrderHistory(value) {
-    this.printReceipt(MESSAGES.output.orderHistory, value);
+    this.printReceipt(MESSAGES.output.orderHistoryTitle, value);
   }
 
   printTotalPrice(value) {
     this.printReceipt(
-      MESSAGES.output.totalPrice,
+      MESSAGES.output.totalPriceTitle,
       `${value.toLocaleString()}원`,
+    );
+  }
+
+  printBenefits(benefits) {
+    this.#printGiveaway(benefits.giveawayBenefit);
+  }
+
+  #printGiveaway(giveawayBenefit) {
+    this.printReceipt(
+      MESSAGES.output.giveawayTitle,
+      giveawayBenefit
+        ? MESSAGES.output.giveawayMessage
+        : MESSAGES.output.noBenefitsMessage,
     );
   }
 }
