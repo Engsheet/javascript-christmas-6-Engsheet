@@ -14,7 +14,7 @@ const output = Object.freeze({
   giveawayMessage: '샴페인 1개',
   benefitDetailsTitle: '\n<혜택 내역>',
   giveawayDetails: '증정 이벤트: -25,000원',
-  benefitPriceTitle: '\n<혜택 금액>',
+  benefitPriceTitle: '\n<총혜택 금액>',
   paymentPriceDiscountTitle: '\n<할인 후 예상 결제 금액>',
   eventBadgeTitle: '\n<12월 이벤트 배지>',
   noBenefitsMessage: '없음',

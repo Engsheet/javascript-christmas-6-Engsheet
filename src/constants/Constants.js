@@ -17,6 +17,7 @@ const eventValue = Object.freeze({
   default: 0,
   minParticipatePrice: 10_000,
   giveawayEventPrice: 120_000,
+  giveawayBenefit: 25_000,
   weekDiscountPrice: 2_023,
   dDayDiscountPrice: 1_000,
   dDayDiscountAdditional: 100,

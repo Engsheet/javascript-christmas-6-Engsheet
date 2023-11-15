@@ -55,9 +55,10 @@ class View {
     );
   }
 
-  printBenefits(benefits) {
-    this.#printGiveaway(benefits.giveawayEvent);
-    this.#printBenefitDetails(benefits);
+  printBenefits(benefitObject) {
+    this.#printGiveaway(benefitObject.giveawayEvent);
+    this.#printBenefitDetails(benefitObject);
+    this.#printTotalBenefitPrice(benefitObject);
   }
 
   #printGiveaway(giveawayBenefit) {
@@ -69,22 +70,56 @@ class View {
     );
   }
 
-  #printBenefitDetails(benefits) {
-    const benefitDetails = [...Object.entries(benefits)]
-      .filter(item => item[1] && typeof item[1] === 'number')
-      .map(
-        item =>
-          `${CONSTANTS.eventName[item[0]]}: -${item[1].toLocaleString()}원`,
-      );
+  #getTotalBenefitPrice(benefitObject) {
+    const benefits = this.#formatGiveawayPrice(benefitObject);
+    const totalBenefit = this.#filterDiscountList(benefits).reduce(
+      (total, cur) => total + Number(cur[1]),
+      0,
+    );
 
-    if (benefits.giveawayEvent) {
-      benefitDetails.push(MESSAGES.output.giveawayDetails);
+    return totalBenefit;
+  }
+
+  #formatGiveawayPrice(benefitObject) {
+    if (benefitObject.giveawayEvent) {
+      return {
+        ...benefitObject,
+        giveawayEvent: CONSTANTS.eventValue.giveawayBenefit,
+      };
     }
+
+    return benefitObject;
+  }
+
+  #filterDiscountList(benefitObject) {
+    const discountList = [...Object.entries(benefitObject)].filter(
+      item => item[1] && typeof item[1] === 'number',
+    );
+
+    return discountList;
+  }
+
+  #printBenefitDetails(benefitObject) {
+    const benefits = this.#formatGiveawayPrice(benefitObject);
+    const benefitDetails = this.#filterDiscountList(benefits).map(
+      item => `${CONSTANTS.eventName[item[0]]}: -${item[1].toLocaleString()}원`,
+    );
 
     this.printReceipt(
       MESSAGES.output.benefitDetailsTitle,
       benefitDetails.length
         ? benefitDetails
+        : MESSAGES.output.noBenefitsMessage,
+    );
+  }
+
+  #printTotalBenefitPrice(benefitObject) {
+    const totalBenefit = this.#getTotalBenefitPrice(benefitObject);
+
+    this.printReceipt(
+      MESSAGES.output.benefitPriceTitle,
+      totalBenefit
+        ? `-${totalBenefit.toLocaleString()}원`
         : MESSAGES.output.noBenefitsMessage,
     );
   }
