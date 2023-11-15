@@ -15,10 +15,6 @@ class Event {
     };
   }
 
-  getBenefits() {
-    return this.#benefits;
-  }
-
   applyEvent(reservation) {
     if (this.#isEventParticipant(reservation)) {
       this.#applyGiveawayEvent(reservation);
@@ -28,17 +24,39 @@ class Event {
     }
   }
 
-  #isEventParticipant(reservation) {
-    return (
-      reservation.getTotalPrice() >= CONSTANTS.eventValue.minParticipatePrice
-    );
+  getGiveawayEvent() {
+    return this.#benefits.giveawayEvent;
   }
 
-  #checkWeekday(date) {
-    const day = getDay(date);
-    const isWeekday = CONSTANTS.weekday.includes(day);
+  getBenefitDetails() {
+    const benefits = this.#changeGiveawayValue();
+    const filterApplyBenefits = this.#filterBenefits(benefits);
 
-    return isWeekday;
+    return filterApplyBenefits;
+  }
+
+  getTotalBenefitsPrice() {
+    const filterApplyBenefits = Object.values(this.getBenefitDetails());
+
+    const totalApplyBenefitsPrice = filterApplyBenefits.reduce(
+      (total, price) => total + price,
+      0,
+    );
+
+    return totalApplyBenefitsPrice;
+  }
+
+  getTotalDiscountPrice() {
+    const filterApplyBenefits = Object.values(
+      this.#filterBenefits(this.#benefits),
+    );
+
+    const totalApplyDiscountPrice = filterApplyBenefits.reduce(
+      (total, price) => total + price,
+      0,
+    );
+
+    return totalApplyDiscountPrice;
   }
 
   #applyGiveawayEvent(reservation) {
@@ -80,6 +98,39 @@ class Event {
       : CONSTANTS.eventValue.default;
 
     this.#benefits = { ...this.#benefits, specialDiscount: discountPrice };
+  }
+
+  #changeGiveawayValue() {
+    return this.#benefits.giveawayEvent
+      ? {
+          ...this.#benefits,
+          giveawayEvent: CONSTANTS.eventValue.giveawayBenefit,
+        }
+      : this.#benefits;
+  }
+
+  #filterBenefits(benefitObject) {
+    const filterBenefits = {};
+
+    Object.keys(benefitObject).forEach(key => {
+      if (benefitObject[key] && typeof benefitObject[key] === 'number')
+        filterBenefits[key] = benefitObject[key];
+    });
+
+    return filterBenefits;
+  }
+
+  #isEventParticipant(reservation) {
+    return (
+      reservation.getTotalPrice() >= CONSTANTS.eventValue.minParticipatePrice
+    );
+  }
+
+  #checkWeekday(date) {
+    const day = getDay(date);
+    const isWeekday = CONSTANTS.weekday.includes(day);
+
+    return isWeekday;
   }
 }
 

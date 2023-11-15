@@ -52,7 +52,7 @@ class ReserveService {
     this.#view.printEventPreview(this.#reservation.getDate());
     this.#view.printOrderHistory(this.#reservation.getOrderHistory());
     this.#view.printTotalPrice(this.#reservation.getTotalPrice());
-    this.#view.printBenefits(this.#event.getBenefits());
+    this.#view.printBenefits(this.#event);
   }
 
   async useReserveService() {

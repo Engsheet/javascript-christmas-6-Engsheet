@@ -55,10 +55,10 @@ class View {
     );
   }
 
-  printBenefits(benefitObject) {
-    this.#printGiveaway(benefitObject.giveawayEvent);
-    this.#printBenefitDetails(benefitObject);
-    this.#printTotalBenefitPrice(benefitObject);
+  printBenefits(event) {
+    this.#printGiveaway(event.getGiveawayEvent());
+    this.#printBenefitDetails(event.getBenefitDetails());
+    this.#printTotalBenefitPrice(event.getTotalBenefitsPrice());
   }
 
   #printGiveaway(giveawayBenefit) {
@@ -70,38 +70,8 @@ class View {
     );
   }
 
-  #getTotalBenefitPrice(benefitObject) {
-    const benefits = this.#formatGiveawayPrice(benefitObject);
-    const totalBenefit = this.#filterDiscountList(benefits).reduce(
-      (total, cur) => total + Number(cur[1]),
-      0,
-    );
-
-    return totalBenefit;
-  }
-
-  #formatGiveawayPrice(benefitObject) {
-    if (benefitObject.giveawayEvent) {
-      return {
-        ...benefitObject,
-        giveawayEvent: CONSTANTS.eventValue.giveawayBenefit,
-      };
-    }
-
-    return benefitObject;
-  }
-
-  #filterDiscountList(benefitObject) {
-    const discountList = [...Object.entries(benefitObject)].filter(
-      item => item[1] && typeof item[1] === 'number',
-    );
-
-    return discountList;
-  }
-
   #printBenefitDetails(benefitObject) {
-    const benefits = this.#formatGiveawayPrice(benefitObject);
-    const benefitDetails = this.#filterDiscountList(benefits).map(
+    const benefitDetails = Object.entries(benefitObject).map(
       item => `${CONSTANTS.eventName[item[0]]}: -${item[1].toLocaleString()}원`,
     );
 
@@ -114,12 +84,10 @@ class View {
   }
 
   #printTotalBenefitPrice(benefitObject) {
-    const totalBenefit = this.#getTotalBenefitPrice(benefitObject);
-
     this.printReceipt(
       MESSAGES.output.benefitPriceTitle,
-      totalBenefit
-        ? `-${totalBenefit.toLocaleString()}원`
+      benefitObject
+        ? `-${benefitObject.toLocaleString()}원`
         : MESSAGES.output.noBenefitsMessage,
     );
   }
