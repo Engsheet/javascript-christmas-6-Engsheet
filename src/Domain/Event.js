@@ -1,5 +1,5 @@
 import CONSTANTS from '../constants/Constants.js';
-import { totalArray } from '../utils/arrayUtils.js';
+import { totalArray as getTotal } from '../utils/arrayUtils.js';
 import { getDay } from '../utils/getDay.js';
 
 class Event {
@@ -39,7 +39,7 @@ class Event {
   getTotalBenefitsPrice() {
     const filterApplyBenefits = Object.values(this.getBenefitDetails());
 
-    return totalArray(filterApplyBenefits);
+    return getTotal(filterApplyBenefits);
   }
 
   getTotalDiscountPrice() {
@@ -47,7 +47,7 @@ class Event {
       this.#filterBenefits(this.#benefits),
     );
 
-    return totalArray(filterApplyBenefits);
+    return getTotal(filterApplyBenefits);
   }
 
   #applyGiveawayEvent(reservation) {
