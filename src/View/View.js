@@ -60,6 +60,7 @@ class View {
     this.#printBenefitDetails(event.getBenefitDetails());
     this.#printTotalBenefitPrice(event.getTotalBenefitsPrice());
     this.#printApplyDiscountPayment(totalPrice, event.getTotalDiscountPrice());
+    this.#printEventBadge(event.getEventBadge());
   }
 
   #printGiveaway(value) {
@@ -99,6 +100,13 @@ class View {
     this.printReceipt(
       MESSAGES.output.applyDiscountPaymentTitle,
       `${applyDiscountPayment.toLocaleString()}원`,
+    );
+  }
+
+  #printEventBadge(value) {
+    this.printReceipt(
+      MESSAGES.output.eventBadgeTitle,
+      value || MESSAGES.output.noBenefitsMessage,
     );
   }
 }

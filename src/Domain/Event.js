@@ -22,6 +22,7 @@ class Event {
       this.#applyDDayDiscount(reservation);
       this.#applyWeekDiscount(reservation);
       this.#applySpecialDayDiscount(reservation);
+      this.#applyEventBadge();
     }
   }
 
@@ -48,6 +49,10 @@ class Event {
     );
 
     return getTotal(filterApplyBenefits);
+  }
+
+  getEventBadge() {
+    return this.#benefits.eventBadge;
   }
 
   #applyGiveawayEvent(reservation) {
@@ -93,6 +98,20 @@ class Event {
     this.#benefits = { ...this.#benefits, specialDiscount: discountPrice };
   }
 
+  #applyEventBadge() {
+    const totalBenefitsPrice = this.getTotalBenefitsPrice();
+
+    if (CONSTANTS.Badge.starConditionPrice <= totalBenefitsPrice) {
+      this.#setBadge(CONSTANTS.Badge.starBadge);
+    }
+    if (CONSTANTS.Badge.treeConditionPrice <= totalBenefitsPrice) {
+      this.#setBadge(CONSTANTS.Badge.treeBadge);
+    }
+    if (CONSTANTS.Badge.santaConditionPrice <= totalBenefitsPrice) {
+      this.#setBadge(CONSTANTS.Badge.santaBadge);
+    }
+  }
+
   #changeGiveawayValue() {
     return this.#benefits.giveawayEvent
       ? {
@@ -124,6 +143,10 @@ class Event {
     const isWeekday = CONSTANTS.weekday.includes(day);
 
     return isWeekday;
+  }
+
+  #setBadge(value) {
+    this.#benefits = { ...this.#benefits, eventBadge: value };
   }
 }
 

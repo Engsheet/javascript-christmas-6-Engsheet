@@ -25,25 +25,13 @@ const eventValue = Object.freeze({
   specialDay: [3, 10, 17, 24, 25, 31],
 });
 
-const star = Object.freeze({
-  name: '별',
-  priceCondition: 5000,
-});
-
-const tree = Object.freeze({
-  name: '트리',
-  priceCondition: 10000,
-});
-
-const santa = Object.freeze({
-  name: '산타',
-  priceCondition: 20000,
-});
-
 const Badge = Object.freeze({
-  star,
-  tree,
-  santa,
+  santaBadge: '산타',
+  santaConditionPrice: 20_000,
+  treeBadge: '트리',
+  treeConditionPrice: 10_000,
+  starBadge: '별',
+  starConditionPrice: 5_000,
 });
 
 const CONSTANTS = Object.freeze({
