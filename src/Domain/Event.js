@@ -72,7 +72,9 @@ class Event {
       CONSTANTS.eventValue.dDayDiscountPrice +
       CONSTANTS.eventValue.dDayDiscountAdditional * (date - 1);
 
-    this.#benefits = { ...this.#benefits, dDayDiscount: discountPrice };
+    if (date <= 25) {
+      this.#benefits = { ...this.#benefits, dDayDiscount: discountPrice };
+    }
   }
 
   #applyWeekDiscount(reservation) {
