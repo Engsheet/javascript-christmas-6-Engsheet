@@ -30,7 +30,7 @@ class View {
     this.#outputView.printMessage(value);
   }
 
-  printReceipt(message, value) {
+  printIterator(message, value) {
     const output = Array.isArray(value)
       ? [message, ...value]
       : [message, value];
@@ -38,46 +38,54 @@ class View {
     output.forEach(item => this.#outputView.printMessage(item));
   }
 
-  printEventPreview(date) {
-    const message = MESSAGES.output.eventPreview.join(`${date}`);
-
-    this.#outputView.printMessage(message);
+  printReceipt(reservation, event) {
+    this.#printEventPreview(reservation);
+    this.#printOrderHistory(reservation);
+    this.#printTotalPrice(reservation);
+    this.#printGiveaway(event);
+    this.#printBenefitDetails(event);
+    this.#printTotalBenefitPrice(event);
+    this.#printApplyDiscountPayment(reservation, event);
+    this.#printEventBadge(event);
   }
 
-  printOrderHistory(value) {
-    this.printReceipt(MESSAGES.output.orderHistoryTitle, value);
+  #printEventPreview(reservation) {
+    const message = MESSAGES.output.eventPreview.join(
+      `${reservation.getDate()}`,
+    );
+
+    this.print(message);
   }
 
-  printTotalPrice(value) {
-    this.printReceipt(
-      MESSAGES.output.totalPriceTitle,
-      `${value.toLocaleString()}원`,
+  #printOrderHistory(reservation) {
+    this.printIterator(
+      MESSAGES.output.orderHistoryTitle,
+      reservation.getOrderHistory(),
     );
   }
 
-  printBenefits(event, totalPrice) {
-    this.#printGiveaway(event.getGiveawayEvent());
-    this.#printBenefitDetails(event.getBenefitDetails());
-    this.#printTotalBenefitPrice(event.getTotalBenefitsPrice());
-    this.#printApplyDiscountPayment(totalPrice, event.getTotalDiscountPrice());
-    this.#printEventBadge(event.getEventBadge());
+  #printTotalPrice(reservation) {
+    this.printIterator(
+      MESSAGES.output.totalPriceTitle,
+      `${reservation.getTotalPrice().toLocaleString()}원`,
+    );
   }
 
-  #printGiveaway(value) {
-    this.printReceipt(
+  #printGiveaway(event) {
+    this.printIterator(
       MESSAGES.output.giveawayTitle,
-      value
+      event.getGiveawayEvent()
         ? MESSAGES.output.giveawayMessage
         : MESSAGES.output.noBenefitsMessage,
     );
   }
 
-  #printBenefitDetails(value) {
-    const benefitDetails = Object.entries(value).map(
+  #printBenefitDetails(event) {
+    const benefitDetails = Object.entries(event.getBenefitDetails()).map(
       item => `${CONSTANTS.eventName[item[0]]}: -${item[1].toLocaleString()}원`,
     );
 
-    this.printReceipt(
+    this.printIterator(
       MESSAGES.output.benefitDetailsTitle,
       benefitDetails.length
         ? benefitDetails
@@ -85,28 +93,29 @@ class View {
     );
   }
 
-  #printTotalBenefitPrice(value) {
-    this.printReceipt(
+  #printTotalBenefitPrice(event) {
+    this.printIterator(
       MESSAGES.output.benefitPriceTitle,
-      value
-        ? `-${value.toLocaleString()}원`
+      event.getTotalBenefitsPrice()
+        ? `-${event.getTotalBenefitsPrice().toLocaleString()}원`
         : MESSAGES.output.noBenefitsMessage,
     );
   }
 
-  #printApplyDiscountPayment(totalPrice, discountPrice) {
-    const applyDiscountPayment = totalPrice - discountPrice;
+  #printApplyDiscountPayment(reservation, event) {
+    const applyDiscountPayment =
+      reservation.getTotalPrice() - event.getTotalDiscountPrice();
 
-    this.printReceipt(
+    this.printIterator(
       MESSAGES.output.applyDiscountPaymentTitle,
       `${applyDiscountPayment.toLocaleString()}원`,
     );
   }
 
-  #printEventBadge(value) {
-    this.printReceipt(
+  #printEventBadge(event) {
+    this.printIterator(
       MESSAGES.output.eventBadgeTitle,
-      value || MESSAGES.output.noBenefitsMessage,
+      event.getEventBadge() || MESSAGES.output.noBenefitsMessage,
     );
   }
 }

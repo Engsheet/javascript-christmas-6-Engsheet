@@ -49,10 +49,7 @@ class ReserveService {
   }
 
   printReceipt() {
-    this.#view.printEventPreview(this.#reservation.getDate());
-    this.#view.printOrderHistory(this.#reservation.getOrderHistory());
-    this.#view.printTotalPrice(this.#reservation.getTotalPrice());
-    this.#view.printBenefits(this.#event, this.#reservation.getTotalPrice());
+    this.#view.printReceipt(this.#reservation, this.#event);
   }
 
   async useReserveService() {
