@@ -16,6 +16,12 @@ class Event {
     };
   }
 
+  #isEventParticipant(reservation) {
+    return (
+      reservation.getTotalPrice() >= CONSTANTS.eventValue.minParticipatePrice
+    );
+  }
+
   applyEvent(reservation) {
     if (this.#isEventParticipant(reservation)) {
       this.#applyGiveawayEvent(reservation);
@@ -130,12 +136,6 @@ class Event {
     });
 
     return filterBenefits;
-  }
-
-  #isEventParticipant(reservation) {
-    return (
-      reservation.getTotalPrice() >= CONSTANTS.eventValue.minParticipatePrice
-    );
   }
 
   #checkWeekday(date) {
