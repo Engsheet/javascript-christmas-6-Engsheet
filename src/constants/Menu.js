@@ -1,73 +1,75 @@
+import CONSTANTS from './Constants.js';
+
 const mushroomSoup = Object.freeze({
   name: '양송이수프',
-  category: '에피타이저',
-  price: 6000,
+  category: CONSTANTS.category.appetizer,
+  price: 6_000,
 });
 
 const tapas = Object.freeze({
   name: '타파스',
-  category: '에피타이저',
-  price: 5500,
+  category: CONSTANTS.category.appetizer,
+  price: 5_500,
 });
 
 const caesarSalad = Object.freeze({
   name: '시저샐러드',
-  category: '에피타이저',
-  price: 8000,
+  category: CONSTANTS.category.appetizer,
+  price: 8_000,
 });
 
 const tboneSteak = Object.freeze({
   name: '티본스테이크',
-  category: '메인',
-  price: 55000,
+  category: CONSTANTS.category.mainMenu,
+  price: 55_000,
 });
 
 const barbecuedRib = Object.freeze({
   name: '바비큐립',
-  category: '메인',
-  price: 54000,
+  category: CONSTANTS.category.mainMenu,
+  price: 54_000,
 });
 
 const seafoodPasta = Object.freeze({
   name: '해산물파스타',
-  category: '메인',
-  price: 35000,
+  category: CONSTANTS.category.mainMenu,
+  price: 35_000,
 });
 
 const christmasPasta = Object.freeze({
   name: '크리스마스파스타',
-  category: '메인',
-  price: 25000,
+  category: CONSTANTS.category.mainMenu,
+  price: 25_000,
 });
 
 const chocoCake = Object.freeze({
   name: '초코케이크',
-  category: '디저트',
-  price: 15000,
+  category: CONSTANTS.category.dessert,
+  price: 15_000,
 });
 
 const icecream = Object.freeze({
   name: '아이스크림',
-  category: '디저트',
-  price: 5000,
+  category: CONSTANTS.category.dessert,
+  price: 5_000,
 });
 
 const zeroCola = Object.freeze({
   name: '제로콜라',
-  category: '음료',
-  price: 3000,
+  category: CONSTANTS.category.beverage,
+  price: 3_000,
 });
 
 const redWine = Object.freeze({
   name: '레드와인',
-  category: '음료',
-  price: 60000,
+  category: CONSTANTS.category.beverage,
+  price: 60_000,
 });
 
 const champagne = Object.freeze({
   name: '샴페인',
-  category: '음료',
-  price: 25000,
+  category: CONSTANTS.category.beverage,
+  price: 25_000,
 });
 
 const MENU = Object.freeze({

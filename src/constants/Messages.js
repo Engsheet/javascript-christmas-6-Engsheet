@@ -8,13 +8,15 @@ const request = Object.freeze({
 const output = Object.freeze({
   intro: '안녕하세요! 우테코 식당 12월 이벤트 플래너입니다.',
   eventPreview: ['12월 ', '일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!'],
-  orderHistory: '\n<주문 메뉴>',
-  totalPrice: '\n<할인 전 총주문 금액>',
-  giveaway: '\n<증정 메뉴>',
-  benefitDetails: '\n<혜택 내역>',
-  benefitAmount: '\n<혜택 금액>',
-  paymentAmountDiscount: '\n<할인 후 예상 결제 금액>',
-  eventBadge: '\n<12월 이벤트 배지>',
+  orderHistoryTitle: '\n<주문 메뉴>',
+  totalPriceTitle: '\n<할인 전 총주문 금액>',
+  giveawayTitle: '\n<증정 메뉴>',
+  giveawayMessage: '샴페인 1개',
+  benefitDetailsTitle: '\n<혜택 내역>',
+  benefitPriceTitle: '\n<혜택 금액>',
+  paymentPriceDiscountTitle: '\n<할인 후 예상 결제 금액>',
+  eventBadgeTitle: '\n<12월 이벤트 배지>',
+  noBenefitsMessage: '없음',
 });
 
 const MESSAGES = Object.freeze({
