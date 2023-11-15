@@ -1,6 +1,7 @@
 import Reservation from '../src/Domain/Reservation';
+import CONSTANTS from '../src/constants/Constants';
 
-describe('에약 서비스 테스트', () => {
+describe('Reservation 클래스 테스트', () => {
   let reservation;
 
   beforeEach(() => {
@@ -8,6 +9,7 @@ describe('에약 서비스 테스트', () => {
   });
 
   describe('날짜 입력 예외 테스트', () => {
+    // given
     const cases = ['0', '32', '100', '-10', '십'];
 
     test.each(cases)(
@@ -24,6 +26,7 @@ describe('에약 서비스 테스트', () => {
   });
 
   describe('메뉴 입력 예외 테스트', () => {
+    // given
     const cases = [
       {
         input: '초코케이크1,샴페인2,양송이수프3',
@@ -73,35 +76,47 @@ describe('에약 서비스 테스트', () => {
     );
   });
 
-  // describe('메뉴 입력 예외 테스트', () => {
-  //   const cases = [
-  //     {
-  //       input: ['바비큐립-1', '샴페인-2', '크리스마스파스타-2'],
-  //       expected: ['바비큐립 1개', '샴페인 2개', '크리스마스파스타 3개'],
-  //     },
-  //     {
-  //       input: ['시저샐러드-1', '티본스테이크-6', '제로콜라-6'],
-  //       expected: ['시저샐러드 1개', '티본스테이크 6개', '제로콜라 6개'],
-  //     },
-  //     {
-  //       input: ['초코케이크-1', '해산물파스타-3', '샴페인-3'],
-  //       expected: ['초코케이크 1개', '해산물파스타 3개', '샴페인 3개'],
-  //     },
-  //   ];
+  describe('getOrderHistory 메서드 테스트', () => {
+    test('"메뉴-n(개수)"의 형태에서 "메뉴 n개"의 형태로 포매팅한다.', () => {
+      // given
+      const input = ['바비큐립-1', '샴페인-2', '크리스마스파스타-2'];
+      const expected = ['바비큐립 1개', '샴페인 2개', '크리스마스파스타 2개'];
 
-  //   test.each(cases)(
-  //     '주문 입력 형식이 잘못된 경우 예외처리 해야 한다.',
+      // when
+      reservation.setOrder(input);
 
-  //     ({ input, expected }) => {
-  //       // when
-  //       const result = () => {
-  //         reservation.setOrder(input);
-  //         reservation.getOrderHistory();
-  //       };
+      // then
+      expect(reservation.getOrderHistory()).toEqual(expected);
+    });
+  });
 
-  //       // then
-  //       expect(result).toBe(expected);
-  //     },
-  //   );
-  // });
+  describe('getTotalPrice 메서드 테스트', () => {
+    test('입력한 메뉴의 가격 합계를 출력한다.', () => {
+      // given
+      const input = ['바비큐립-1', '샴페인-2', '크리스마스파스타-2'];
+      const expected = 154000;
+
+      // when
+      reservation.setOrder(input);
+
+      // then
+      expect(reservation.getTotalPrice()).toEqual(expected);
+    });
+  });
+
+  describe('getCategoryOrderCount 메서드 테스트', () => {
+    test('원하는 카테고리 메뉴의 개수 합계를 출력한다.', () => {
+      // given
+      const input = ['바비큐립-1', '샴페인-2', '크리스마스파스타-2'];
+      const expected = 3;
+
+      // when
+      reservation.setOrder(input);
+
+      // then
+      expect(
+        reservation.getCategoryOrderCount(CONSTANTS.categories.mainMenu),
+      ).toEqual(expected);
+    });
+  });
 });
